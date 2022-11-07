@@ -1,0 +1,28 @@
+{
+    "name": "kyto/alibaba-sdk",
+    "description": "Alibaba SDK for PHP",
+    "keywords": ["alibaba" ,"sdk", "api", "kyto"],
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Kyto GmbH",
+            "homepage": "https://kyto.com/"
+        }
+    ],
+    "require": {
+        "php": "^8",
+        "ext-json": "*"
+    },
+    "require-dev" : {},
+    "autoload": {
+        "psr-4": {
+            "Kyto\\Alibaba\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kyto\\Alibaba\\Tests\\": "tests/"
+        }
+    }
+}
