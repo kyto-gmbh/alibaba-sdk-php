@@ -12,9 +12,10 @@
     ],
     "require": {
         "php": "^8",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "symfony/http-client": "^5.4 || ^6"
     },
-    "require-dev" : {},
     "autoload": {
         "psr-4": {
             "Kyto\\Alibaba\\": "src/"
