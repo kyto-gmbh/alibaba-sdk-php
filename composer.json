@@ -16,6 +16,9 @@
         "ext-mbstring": "*",
         "symfony/http-client": "^5.4 || ^6"
     },
+    "suggest": {
+        "ext-curl": "To send requests using cURL"
+    },
     "autoload": {
         "psr-4": {
             "Kyto\\Alibaba\\": "src/"
