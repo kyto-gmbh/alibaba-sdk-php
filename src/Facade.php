@@ -36,8 +36,8 @@ class Facade
     }
 
     /**
-     * Making GET request to this URL will ask to login to Alibaba and authorize this API key to have access to the account.
-     * In other words client should visit this url and authorize App to access Alibaba account by API.
+     * Making GET request to this URL will ask to login to Alibaba and authorize this API key to have access
+     * to the account. In other words client should visit this url and authorize App to access Alibaba account by API.
      *
      * @param string $callbackUrl URL where authorization code returned. Via method GET in "code" parameter.
      */
