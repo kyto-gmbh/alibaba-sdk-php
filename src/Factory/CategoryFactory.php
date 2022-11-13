@@ -15,7 +15,7 @@ use Kyto\Alibaba\Model\CategoryAttributeValue;
 class CategoryFactory
 {
     /**
-     * @param mixed $data
+     * @param mixed[] $data
      */
     public function createCategory(array $data): Category
     {
@@ -34,7 +34,7 @@ class CategoryFactory
     }
 
     /**
-     * @param mixed $data
+     * @param mixed[] $data
      */
     public function createAttribute(array $data): CategoryAttribute
     {
@@ -64,7 +64,7 @@ class CategoryFactory
     }
 
     /**
-     * @param mixed $data
+     * @param mixed[] $data
      */
     public function createAttributeValue(array $data): CategoryAttributeValue
     {

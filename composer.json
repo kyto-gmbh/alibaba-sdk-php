@@ -16,6 +16,9 @@
         "ext-mbstring": "*",
         "symfony/http-client": "^5.4 || ^6"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^1.9"
+    },
     "suggest": {
         "ext-curl": "To send requests using cURL"
     },
@@ -28,5 +31,12 @@
         "psr-4": {
             "Kyto\\Alibaba\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test:phpstan": "vendor/bin/phpstan analyse --ansi --no-progress",
+
+        "test:all": [
+            "@test:phpstan"
+        ]
     }
 }
