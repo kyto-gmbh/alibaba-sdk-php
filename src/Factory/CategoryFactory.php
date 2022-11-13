@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Factory;
 
-use Kyto\Alibaba\Helper\Formatter;
+use Kyto\Alibaba\Util\Formatter;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 use Kyto\Alibaba\Model\CategoryAttributeValue;
@@ -27,8 +27,8 @@ class CategoryFactory
         $model->nameCN = (string) ($category['cn_name'] ?? '');
         $model->level = (int) $category['level'];
         $model->isLeaf = (bool) $category['leaf_category'];
-        $model->parents = Formatter::getArrayOfString($category['parent_ids']['number'] ?? []);
-        $model->children = Formatter::getArrayOfString($category['child_ids']['number'] ?? []);
+        $model->parents = Formatter::getAsArrayOfString($category['parent_ids']['number'] ?? []);
+        $model->children = Formatter::getAsArrayOfString($category['child_ids']['number'] ?? []);
 
         return $model;
     }
@@ -53,7 +53,7 @@ class CategoryFactory
         $model->hasCustomizeValue = (bool) $data['customize_value'];
         $model->isCarModel = (bool) $data['car_model'];
 
-        $model->units = Formatter::getArrayOfString($data['units']['string'] ?? []);
+        $model->units = Formatter::getAsArrayOfString($data['units']['string'] ?? []);
 
         $values = $data['attribute_values']['attribute_value'] ?? [];
         foreach ($values as $value) {
@@ -73,7 +73,7 @@ class CategoryFactory
         $model->id = (string) $data['attr_value_id'];
         $model->name = (string) $data['en_name'];
         $model->isSku = (bool) $data['sku_value'];
-        $model->childAttributes = Formatter::getArrayOfString($data['child_attrs']['number'] ?? []);
+        $model->childAttributes = Formatter::getAsArrayOfString($data['child_attrs']['number'] ?? []);
 
         return $model;
     }
