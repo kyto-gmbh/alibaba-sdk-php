@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba;
 
+use Kyto\Alibaba\Exception\AlibabaException;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 use Symfony\Component\HttpClient\HttpClient;
@@ -56,6 +57,8 @@ class Facade
             'cat_id' => $id,
         ]);
 
+        $this->throwOnError($data);
+
         return Category::createFromRawData($data);
     }
 
@@ -69,6 +72,8 @@ class Facade
             'cat_id' => $categotyId,
         ]);
 
+        $this->throwOnError($data);
+
         $result = [];
 
         $attributes = $data['alibaba_icbu_category_attribute_get_response']['attributes']['attribute'];
@@ -77,5 +82,17 @@ class Facade
         }
 
         return $result;
+    }
+
+    /**
+     * @param mixed[] $data
+     */
+    private function throwOnError(array $data): void
+    {
+        $errorResponse = $data['error_response'] ?? null;
+
+        if ($errorResponse !== null) {
+            throw new AlibabaException($errorResponse);
+        }
     }
 }
