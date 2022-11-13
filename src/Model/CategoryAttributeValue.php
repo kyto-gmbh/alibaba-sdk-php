@@ -13,9 +13,10 @@ class CategoryAttributeValue
     public bool $isSku;
 
     /** @var string[] */
-    public array $childAttributeIds = [];
+    public array $childAttributes = [];
 
     /**
+     * @internal
      * @param mixed $data
      */
     public static function createFromRawData(array $data): self
@@ -25,7 +26,7 @@ class CategoryAttributeValue
         $self->id = (string) $data['attr_value_id'];
         $self->name = (string) $data['en_name'];
         $self->isSku = (bool) $data['sku_value'];
-        $self->childAttributeIds = Formatter::getArrayOfString($data['child_attrs']['number'] ?? []);
+        $self->childAttributes = Formatter::getArrayOfString($data['child_attrs']['number'] ?? []);
 
         return $self;
     }

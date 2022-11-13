@@ -15,12 +15,13 @@ class Category
     public bool $isLeaf;
 
     /** @var string[] */
-    public array $parentIds = [];
+    public array $parents = [];
 
     /** @var string[] */
-    public array $childIds = [];
+    public array $children = [];
 
     /**
+     * @internal
      * @param mixed $data
      */
     public static function createFromRawData(array $data): self
@@ -33,8 +34,8 @@ class Category
         $self->nameCN = (string) ($category['cn_name'] ?? '');
         $self->level = (int) $category['level'];
         $self->isLeaf = (bool) $category['leaf_category'];
-        $self->parentIds = Formatter::getArrayOfString($category['parent_ids']['number'] ?? []);
-        $self->childIds = Formatter::getArrayOfString($category['child_ids']['number'] ?? []);
+        $self->parents = Formatter::getArrayOfString($category['parent_ids']['number'] ?? []);
+        $self->children = Formatter::getArrayOfString($category['child_ids']['number'] ?? []);
 
         return $self;
     }

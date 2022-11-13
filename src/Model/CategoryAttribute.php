@@ -28,6 +28,7 @@ class CategoryAttribute
     public array $values = [];
 
     /**
+     * @internal
      * @param mixed $data
      */
     public static function createFromRawData(array $data): self

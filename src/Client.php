@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba;
 
+use Kyto\Alibaba\Exception\AlibabaException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -38,7 +39,9 @@ class Client
             ], $payload)),
         ]);
 
-        return $response->toArray();
+        $data = $response->toArray();
+        $this->throwOnError($data);
+        return $data;
     }
 
     /**
@@ -69,5 +72,17 @@ class Client
     private function getTimestamp(): string
     {
         return (new \DateTime('now', new \DateTimeZone('GMT+8')))->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @param mixed[] $data
+     */
+    private function throwOnError(array $data): void
+    {
+        $errorResponse = $data['error_response'] ?? null;
+
+        if ($errorResponse !== null) {
+            throw new AlibabaException($errorResponse);
+        }
     }
 }
