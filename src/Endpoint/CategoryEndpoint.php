@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Endpoint;
 
 use Kyto\Alibaba\Client;
+use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 
@@ -13,8 +14,17 @@ class CategoryEndpoint
     /**
      * @internal
      */
+    public static function create(Client $client): self
+    {
+        return new self($client, new CategoryFactory());
+    }
+
+    /**
+     * @internal
+     */
     public function __construct(
         private Client $client,
+        private CategoryFactory $categoryFactory,
     ) {
     }
 
@@ -30,7 +40,7 @@ class CategoryEndpoint
             'cat_id' => $id,
         ]);
 
-        return Category::createFromRawData($data);
+        return $this->categoryFactory->createCategory($data);
     }
 
     /**
@@ -49,7 +59,7 @@ class CategoryEndpoint
 
         $attributes = $data['alibaba_icbu_category_attribute_get_response']['attributes']['attribute'];
         foreach ($attributes as $attribute) {
-            $result[] = CategoryAttribute::createFromRawData($attribute);
+            $result[] = $this->categoryFactory->createAttribute($attribute);
         }
 
         return $result;

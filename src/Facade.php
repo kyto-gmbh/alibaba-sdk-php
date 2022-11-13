@@ -32,7 +32,7 @@ class Facade
         private string $apiKey,
         private Client $client,
     ) {
-        $this->category = new CategoryEndpoint($this->client);
+        $this->category = CategoryEndpoint::create($this->client);
     }
 
     /**
