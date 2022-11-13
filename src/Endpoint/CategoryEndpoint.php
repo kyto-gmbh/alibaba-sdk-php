@@ -30,6 +30,7 @@ class CategoryEndpoint
 
     /**
      * Get product listing category
+     * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=50064
      *
      * @param string $id Provide '0' to fetch root categories
      */
@@ -45,6 +46,7 @@ class CategoryEndpoint
 
     /**
      * Get system-defined attributes based on category ID
+     * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=25348
      *
      * @return CategoryAttribute[]
      */
