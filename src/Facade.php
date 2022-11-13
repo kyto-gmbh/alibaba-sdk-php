@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba;
 
 use Kyto\Alibaba\Endpoint\CategoryEndpoint;
+use Kyto\Alibaba\Util\Clock;
 use Symfony\Component\HttpClient\HttpClient;
 
 class Facade
@@ -21,7 +22,7 @@ class Facade
     {
         return new self(
             $apiKey,
-            new Client($apiKey, $secret, HttpClient::create()),
+            new Client($apiKey, $secret, HttpClient::create(), new Clock()),
         );
     }
 

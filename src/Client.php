@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba;
 
 use Kyto\Alibaba\Exception\AlibabaException;
+use Kyto\Alibaba\Util\Clock;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -16,6 +17,7 @@ class Client
         private string $apiKey,
         private string $secret,
         private HttpClientInterface $httpClient,
+        private Clock $clock,
     ) {
     }
 
@@ -71,7 +73,7 @@ class Client
      */
     private function getTimestamp(): string
     {
-        return (new \DateTime('now', new \DateTimeZone('GMT+8')))->format('Y-m-d H:i:s');
+        return $this->clock->now('GMT+8')->format('Y-m-d H:i:s');
     }
 
     /**
@@ -82,7 +84,12 @@ class Client
         $errorResponse = $data['error_response'] ?? null;
 
         if ($errorResponse !== null) {
-            throw new AlibabaException($errorResponse);
+            throw new AlibabaException(
+                $errorResponse['msg'],
+                (int) $errorResponse['code'],
+                $errorResponse['sub_msg'],
+                $errorResponse['sub_code'],
+            );
         }
     }
 }

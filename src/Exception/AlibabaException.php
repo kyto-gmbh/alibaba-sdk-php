@@ -9,17 +9,14 @@ namespace Kyto\Alibaba\Exception;
  */
 class AlibabaException extends \RuntimeException
 {
-    /**
-     * @param mixed[] $errorResponse
-     */
-    public function __construct(array $errorResponse, ?\Throwable $previous = null)
-    {
-        $message = sprintf(
-            '%s. Sub-code: "%s". Sub-message: "%s".',
-            $errorResponse['msg'],
-            $errorResponse['sub_code'],
-            $errorResponse['sub_msg'],
-        );
-        parent::__construct($message, (int) $errorResponse['code'], $previous);
+    public function __construct(
+        string $message,
+        int $code,
+        string $subMessage,
+        string $subCode,
+        ?\Throwable $previous = null
+    ) {
+        $message = sprintf('%s. Sub-code: "%s". Sub-message: "%s".', $message, $subCode, $subMessage);
+        parent::__construct($message, $code, $previous);
     }
 }
