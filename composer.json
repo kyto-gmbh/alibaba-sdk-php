@@ -35,7 +35,7 @@
         }
     },
     "scripts": {
-        "test:phpcs": "vendor/bin/phpcs -s -p",
+        "test:phpcs": "php -r \"file_exists('var') ?: mkdir('var', 0755, true);\" && vendor/bin/phpcs -s -p",
         "test:phpstan": "vendor/bin/phpstan analyse --ansi --no-progress",
         "test:phpunit": "vendor/bin/phpunit --colors=always",
 
