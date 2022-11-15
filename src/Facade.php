@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Kyto\Alibaba;
 
 use Kyto\Alibaba\Endpoint\CategoryEndpoint;
+use Kyto\Alibaba\Endpoint\TokenEndpoint;
 use Kyto\Alibaba\Util\Clock;
 use Symfony\Component\HttpClient\HttpClient;
 
 class Facade
 {
     public CategoryEndpoint $category;
+    public TokenEndpoint $token;
 
     /**
      * Facade factory method. Use this to create new Alibaba SDK interaction object.
@@ -34,6 +36,7 @@ class Facade
         private Client $client,
     ) {
         $this->category = CategoryEndpoint::create($this->client);
+        $this->token = TokenEndpoint::create($this->client);
     }
 
     /**
