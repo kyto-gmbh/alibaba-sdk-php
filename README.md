@@ -22,12 +22,18 @@ $alibaba->category->get('0'); // @return Kyto\Alibaba\Model\Category
 ```
 
 ## Endpoints
+Currently implemented endpoint:
+
 ```text
 facade
 ├─ getAuthorizationUrl - Get user authorization url
-└─ category/           - Category endpoint
-   ├─ get                  - Get product listing category
-   └─ getAttributes        - Get system-defined attributes based on category ID
+├─ token/              - Token endpoint
+│  └─ new                  - Obtain new session token
+├─ category/           - Category endpoint
+│  ├─ get                  - Get product listing category
+│  └─ getAttributes        - Get system-defined attributes based on category ID
+└─ product/            - Product endpoint
+   └─ getGroup             - Get product group
 ```
 
 ## Credits
