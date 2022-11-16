@@ -32,13 +32,13 @@ class CategoryEndpoint
      * Get product listing category
      * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=50064
      *
-     * @param string $id Provide '0' to fetch root categories
+     * @param ?string $id Provide `null` to fetch root categories
      */
-    public function get(string $id): Category
+    public function get(?string $id = null): Category
     {
         $data = $this->client->request([
             'method' => 'alibaba.icbu.category.get.new',
-            'cat_id' => $id,
+            'cat_id' => $id ?? '0', // '0' to fetch root categories
         ]);
 
         return $this->categoryFactory->createCategory($data);
@@ -50,11 +50,11 @@ class CategoryEndpoint
      *
      * @return CategoryAttribute[]
      */
-    public function getAttributes(string $categotyId): array
+    public function getAttributes(string $categoryId): array
     {
         $data = $this->client->request([
             'method' => 'alibaba.icbu.category.attribute.get',
-            'cat_id' => $categotyId,
+            'cat_id' => $categoryId,
         ]);
 
         $result = [];
