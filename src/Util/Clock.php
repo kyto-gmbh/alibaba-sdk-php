@@ -8,6 +8,10 @@ class Clock
 {
     public function now(?string $timezone = null): \DateTime
     {
-        return $timezone === null ? new \DateTime() : new \DateTime('now', new \DateTimeZone($timezone));
+        if ($timezone === null) {
+            return new \DateTime();
+        }
+
+        return new \DateTime('now', new \DateTimeZone($timezone));
     }
 }
