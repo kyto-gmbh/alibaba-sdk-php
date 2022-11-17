@@ -22,7 +22,7 @@ $alibaba->category->get('0'); // @return Kyto\Alibaba\Model\Category
 ```
 
 ## Endpoints
-Currently implemented endpoint:
+Currently implemented endpoints:
 
 ```text
 facade
