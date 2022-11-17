@@ -119,21 +119,23 @@ class CategoryFactoryTest extends TestCase
             'customize_image' => false,
             'customize_value' => false,
             'car_model' => false,
-            'attribute_values' => ['attribute_value' => [
-                [
-                    'attr_value_id' => 11,
-                    'en_name' => 'Value 1',
-                    'sku_value' => false,
-                    'child_attrs' => [
-                        'number' => [2, 3]
-                    ]
-                ],
-                [
-                    'attr_value_id' => 12,
-                    'en_name' => 'Value 2',
-                    'sku_value' => true,
-                ],
-            ]],
+            'attribute_values' => [
+                'attribute_value' => [
+                    [
+                        'attr_value_id' => 11,
+                        'en_name' => 'Value 1',
+                        'sku_value' => false,
+                        'child_attrs' => [
+                            'number' => [2, 3]
+                        ]
+                    ],
+                    [
+                        'attr_value_id' => 12,
+                        'en_name' => 'Value 2',
+                        'sku_value' => true,
+                    ],
+                ]
+            ],
         ];
 
         $model = new CategoryAttribute();
