@@ -1,7 +1,7 @@
 # Alibaba SDK
 [![build](https://github.com/kyto-gmbh/alibaba-sdk-php/actions/workflows/build.yml/badge.svg)](https://github.com/kyto-gmbh/alibaba-sdk-php/actions/workflows/build.yml)
 
-Alibaba SDK for PHP. This package provides structured interface to communicate with [Alibaba Open Platform](https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=1&docId=118496).
+Alibaba SDK for PHP. This package provides a structured interface to communicate with [Alibaba Open Platform](https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=1&docId=118496).
 
 ## Installation
 Install the latest version with [Composer](https://getcomposer.org/):
