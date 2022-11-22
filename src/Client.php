@@ -29,21 +29,33 @@ class Client
      */
     public function request(array $payload): array
     {
+        $headers = ['User-Agent' => 'Kyto Alibaba Client'];
+        $body = $this->getBody($payload);
+
         $response = $this->httpClient->request('POST', 'https://api.taobao.com/router/rest', [
-            'headers' => [
-                'User-Agent' => 'Kyto Alibaba Client',
-            ],
-            'body' => $this->getSignedBody(array_merge([
-                'app_key' => $this->apiKey,
-                'timestamp' => $this->getTimestamp(),
-                'format' => 'json',
-                'v' => '2.0',
-            ], $payload)),
+            'headers' => $headers,
+            'body' => $body,
         ]);
 
         $data = $response->toArray();
         $this->throwOnError($data);
         return $data;
+    }
+
+    /**
+     * @param mixed[] $payload
+     * @return mixed[]
+     */
+    private function getBody(array $payload): array
+    {
+        $payload = array_merge([
+            'app_key' => $this->apiKey,
+            'timestamp' => $this->getTimestamp(),
+            'format' => 'json',
+            'v' => '2.0',
+        ], $payload);
+
+        return $this->getSignedBody($payload);
     }
 
     /**
