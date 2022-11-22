@@ -36,9 +36,11 @@ class CategoryEndpoint
      */
     public function get(?string $id = null): Category
     {
+        $id = $id ?? '0'; // '0' to fetch root categories
+
         $data = $this->client->request([
             'method' => 'alibaba.icbu.category.get.new',
-            'cat_id' => $id ?? '0', // '0' to fetch root categories
+            'cat_id' => $id
         ]);
 
         return $this->categoryFactory->createCategory($data);

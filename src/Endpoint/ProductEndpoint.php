@@ -36,10 +36,12 @@ class ProductEndpoint
      */
     public function getGroup(Token $token, ?string $id = null): ProductGroup
     {
+        $id = $id ?? '-1'; // '-1' to fetch root groups
+
         $data = $this->client->request([
             'method' => 'alibaba.icbu.product.group.get',
             'session' => $token->token,
-            'group_id' => $id ?? '-1', // '-1' to fetch root groups
+            'group_id' => $id
         ]);
 
         return $this->productFactory->createGroup($data);
