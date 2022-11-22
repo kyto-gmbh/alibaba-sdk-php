@@ -10,6 +10,7 @@ class CategoryAttribute
     public string $name;
     public bool $isRequired;
 
+    // TODO: change to enums once all values would be known
     public string $inputType; // Known values: single_select, multi_select, input
     public string $showType; // Known values: list_box (single_select), check_box (multi_select), input (input)
     public string $valueType; // Known values: string, number
