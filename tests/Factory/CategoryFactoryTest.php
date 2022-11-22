@@ -39,9 +39,10 @@ class CategoryFactoryTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function createCategoryDataProvider(): iterable
+    public function createCategoryDataProvider(): array
     {
-        // Full result
+        $cases = [];
+
         $data = [
             'alibaba_icbu_category_get_new_response' => [
                 'category' => [
@@ -65,9 +66,8 @@ class CategoryFactoryTest extends TestCase
         $model->parents = ['2', '3'];
         $model->children = ['4', '5'];
 
-        yield [$data, $model];
+        $cases['full-result'] = [$data, $model];
 
-        // No parents and children
         $data = [
             'alibaba_icbu_category_get_new_response' => [
                 'category' => [
@@ -89,7 +89,9 @@ class CategoryFactoryTest extends TestCase
         $model->parents = [];
         $model->children = [];
 
-        yield [$data, $model];
+        $cases['no-parents-and-children'] = [$data, $model];
+
+        return $cases;
     }
 
     /**
@@ -105,9 +107,10 @@ class CategoryFactoryTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function createAttributeDataProvider(): iterable
+    public function createAttributeDataProvider(): array
     {
-        // list_box
+        $cases = [];
+
         $data = [
             'attr_id' => 1,
             'en_name' => 'Example',
@@ -165,9 +168,8 @@ class CategoryFactoryTest extends TestCase
 
         $model->values = [$value1, $value2];
 
-        yield [$data, $model];
+        $cases['list_box'] = [$data, $model];
 
-        // input
         $data = [
             'attr_id' => 1,
             'en_name' => 'Example',
@@ -196,7 +198,9 @@ class CategoryFactoryTest extends TestCase
         $model->units = ['mm', 'cm'];
         $model->values = [];
 
-        yield [$data, $model];
+        $cases['input'] = [$data, $model];
+
+        return $cases;
     }
 
     /**
@@ -212,9 +216,10 @@ class CategoryFactoryTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function createAttributeValueDataProvider(): iterable
+    public function createAttributeValueDataProvider(): array
     {
-        // With children
+        $cases = [];
+
         $data = [
             'attr_value_id' => 11,
             'en_name' => 'Value 1',
@@ -230,9 +235,8 @@ class CategoryFactoryTest extends TestCase
         $model->isSku = false;
         $model->childAttributes = ['2', '3'];
 
-        yield [$data, $model];
+        $cases['with-children'] = [$data, $model];
 
-        // No children
         $data = [
             'attr_value_id' => 11,
             'en_name' => 'Value 1',
@@ -245,6 +249,8 @@ class CategoryFactoryTest extends TestCase
         $model->isSku = false;
         $model->childAttributes = [];
 
-        yield [$data, $model];
+        $cases['no-children'] = [$data, $model];
+
+        return $cases;
     }
 }

@@ -37,21 +37,20 @@ class TokenFactoryTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function createTokenDataProvider(): iterable
+    public function createTokenDataProvider(): array
     {
-        // Full result
-        $data = [
-            'top_auth_token_create_response' => [
-                'token_result' => json_encode([
-                    'user_id' => '123',
-                    'user_nick' => 'example',
-                    'access_token' => 'access-token',
-                    'expire_time' => 1468663236386,
-                    'refresh_token' => 'refresh-token',
-                    'refresh_token_valid_time' => 1469643536337,
-                ], JSON_THROW_ON_ERROR),
-            ]
+        $cases = [];
+
+        $tokenData = [
+            'user_id' => '123',
+            'user_nick' => 'example',
+            'access_token' => 'access-token',
+            'expire_time' => 1468663236386,
+            'refresh_token' => 'refresh-token',
+            'refresh_token_valid_time' => 1469643536337,
         ];
+        $tokenResult = json_encode($tokenData, JSON_THROW_ON_ERROR);
+        $data = ['top_auth_token_create_response' => ['token_result' => $tokenResult]];
 
         $expected = new Token();
         $expected->userId = '123';
@@ -61,20 +60,17 @@ class TokenFactoryTest extends TestCase
         $expected->refreshToken = 'refresh-token';
         $expected->refreshTokenExpireAt = (new \DateTimeImmutable())->setDate(2016, 7, 27)->setTime(18, 18, 56, 337000);
 
-        yield [$data, $expected];
+        $cases['full-result'] = [$data, $expected];
 
-        // No username
-        $data = [
-            'top_auth_token_create_response' => [
-                'token_result' => json_encode([
-                    'user_id' => '123',
-                    'access_token' => 'access-token',
-                    'expire_time' => 1468663236386,
-                    'refresh_token' => 'refresh-token',
-                    'refresh_token_valid_time' => 1469643536337,
-                ], JSON_THROW_ON_ERROR),
-            ]
+        $tokenData = [
+            'user_id' => '123',
+            'access_token' => 'access-token',
+            'expire_time' => 1468663236386,
+            'refresh_token' => 'refresh-token',
+            'refresh_token_valid_time' => 1469643536337,
         ];
+        $tokenResult = json_encode($tokenData, JSON_THROW_ON_ERROR);
+        $data = ['top_auth_token_create_response' => ['token_result' => $tokenResult]];
 
         $expected = new Token();
         $expected->userId = '123';
@@ -84,6 +80,8 @@ class TokenFactoryTest extends TestCase
         $expected->refreshToken = 'refresh-token';
         $expected->refreshTokenExpireAt = (new \DateTimeImmutable())->setDate(2016, 7, 27)->setTime(18, 18, 56, 337000);
 
-        yield [$data, $expected];
+        $cases['no-username'] = [$data, $expected];
+
+        return $cases;
     }
 }
