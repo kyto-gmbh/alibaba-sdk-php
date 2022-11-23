@@ -3,6 +3,12 @@
 
 Alibaba SDK for PHP. This package provides a structured interface to communicate with [Alibaba Open Platform](https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=1&docId=118496).
 
+> Note, package is in development therefore public interface could be changed in future releases.
+
+## Requirements
+Currently, the minimum required PHP version is **PHP 8.0**.  
+See the [composer.json](composer.json) for other requirements.  
+
 ## Installation
 Install the latest version with [Composer](https://getcomposer.org/):
 ```bash

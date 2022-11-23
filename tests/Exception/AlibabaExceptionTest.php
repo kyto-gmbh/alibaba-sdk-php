@@ -21,6 +21,8 @@ class AlibabaExceptionTest extends TestCase
 
         self::assertSame('Message. Sub-code: "sub.code". Sub-message: "Sub-message".', $exception->getMessage());
         self::assertSame($code, $exception->getCode());
+        self::assertSame($subMessage, $exception->getSubMessage());
+        self::assertSame($subCode, $exception->getSubCode());
         self::assertSame($previous, $exception->getPrevious());
     }
 }
