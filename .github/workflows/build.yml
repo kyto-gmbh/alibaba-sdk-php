@@ -1,0 +1,54 @@
+name: build
+
+on:
+    push:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: ['8.0', '8.1', '8.2']
+                composer: ['--prefer-lowest', '']
+        steps:
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: curl, json, mbstring
+                    coverage: xdebug
+
+            -   name: Git checkout
+                uses: actions/checkout@v3
+
+            -   name: Validate composer.json and composer.lock
+                run: composer validate
+
+            -   name: Prepare Composer cache vars
+                id: composer
+                run: |
+                    echo "::set-output name=cache_dir::$(composer config cache-files-dir)"
+                    echo "::set-output name=cache_key::composer-$(date +'%Y-%m-%d')-${{ matrix.php }}${{ matrix.composer }}-"
+
+            -   name: Cache Composer dependencies
+                uses: actions/cache@v3
+                with:
+                    path: ${{ steps.composer.outputs.cache_dir }}
+                    key: ${{ steps.composer.outputs.cache_key }}${{ hashFiles('**/composer.json') }}
+                    restore-keys: ${{ steps.composer.outputs.cache_key }}
+
+            -   name: Update Composer dependencies
+                run: composer update ${{ matrix.composer }} --prefer-dist --no-progress --no-suggest --no-interaction
+
+            -   name: Run PHP Code Sniffer
+                run: composer run-script test:phpcs
+                if: success()
+
+            -   name: Run PHPStan
+                run: composer run-script test:phpstan
+                if: success() || failure()
+
+            -   name: Run PHPUnit with coverage
+                run: composer run-script test:phpunit
+                if: success() || failure()

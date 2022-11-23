@@ -1,0 +1,48 @@
+{
+    "name": "kyto/alibaba-sdk",
+    "description": "Alibaba SDK for PHP",
+    "keywords": ["alibaba" ,"sdk", "api", "kyto"],
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Kyto GmbH",
+            "homepage": "https://kyto.com/"
+        }
+    ],
+    "require": {
+        "php": "^8",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "symfony/http-client": "^5.4 || ^6"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.9",
+        "squizlabs/php_codesniffer": "^3.7",
+        "phpunit/phpunit": "^9.5"
+    },
+    "suggest": {
+        "ext-curl": "To send requests using cURL"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kyto\\Alibaba\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kyto\\Alibaba\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test:phpcs": "php -r \"file_exists('var') ?: mkdir('var', 0755, true);\" && vendor/bin/phpcs -s -p",
+        "test:phpstan": "vendor/bin/phpstan analyse --ansi --no-progress",
+        "test:phpunit": "vendor/bin/phpunit --colors=always",
+
+        "test:all": [
+            "@test:phpcs",
+            "@test:phpstan",
+            "@test:phpunit"
+        ]
+    }
+}
