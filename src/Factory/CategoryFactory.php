@@ -81,7 +81,7 @@ class CategoryFactory
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param <string, mixed> $data
      */
     public function createLevelAttribute(array $data): CategoryLevelAttribute
     {

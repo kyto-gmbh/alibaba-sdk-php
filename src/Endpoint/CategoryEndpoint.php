@@ -77,8 +77,11 @@ class CategoryEndpoint
      *
      * @param ?string $valueId provide null to fetch first level
      */
-    public function getLevelAttribute(string $categoryId, string $attributeId, ?string $valueId = null): CategoryLevelAttribute
-    {
+    public function getLevelAttribute(
+        string $categoryId,
+        string $attributeId,
+        ?string $valueId = null
+    ): CategoryLevelAttribute {
         $attributeValueRequest = new CategoryLevelAttributeRequest();
         $attributeValueRequest->categoryId = $categoryId;
         $attributeValueRequest->attributeId = $attributeId;

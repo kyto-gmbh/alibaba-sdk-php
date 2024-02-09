@@ -12,8 +12,8 @@ class AlibabaException extends \RuntimeException
     public function __construct(
         string $message,
         int $code,
-        private string $subMessage,
-        private string $subCode,
+        private ?string $subMessage,
+        private ?string $subCode,
         ?\Throwable $previous = null
     ) {
         $message = sprintf('%s. Sub-code: "%s". Sub-message: "%s".', $message, $this->subCode, $this->subMessage);
