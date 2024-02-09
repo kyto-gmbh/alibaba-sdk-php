@@ -20,12 +20,12 @@ class AlibabaException extends \RuntimeException
         parent::__construct($message, $code, $previous);
     }
 
-    public function getSubMessage(): string
+    public function getSubMessage(): ?string
     {
         return $this->subMessage;
     }
 
-    public function getSubCode(): string
+    public function getSubCode(): ?string
     {
         return $this->subCode;
     }
