@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Factory;
 
+use Kyto\Alibaba\Model\CategoryLevelAttribute;
+use Kyto\Alibaba\Model\CategoryLevelAttributeValue;
 use Kyto\Alibaba\Util\Formatter;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
@@ -15,7 +17,7 @@ use Kyto\Alibaba\Model\CategoryAttributeValue;
 class CategoryFactory
 {
     /**
-     * @param mixed[] $data
+     * @param array<string, mixed> $data
      */
     public function createCategory(array $data): Category
     {
@@ -34,7 +36,7 @@ class CategoryFactory
     }
 
     /**
-     * @param mixed[] $data
+     * @param array<string, mixed> $data
      */
     public function createAttribute(array $data): CategoryAttribute
     {
@@ -64,7 +66,7 @@ class CategoryFactory
     }
 
     /**
-     * @param mixed[] $data
+     * @param array<string, mixed> $data
      */
     public function createAttributeValue(array $data): CategoryAttributeValue
     {
@@ -74,6 +76,38 @@ class CategoryFactory
         $model->name = (string) $data['en_name'];
         $model->isSku = (bool) $data['sku_value'];
         $model->childAttributes = Formatter::getAsArrayOfString($data['child_attrs']['number'] ?? []);
+
+        return $model;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function createLevelAttribute(array $data): CategoryLevelAttribute
+    {
+        $model = new CategoryLevelAttribute();
+
+        $model->id = (string) $data['property_id'];
+        $model->name = (string) $data['property_en_name'];
+
+        $model->values = [];
+        $decodedValues = json_decode($data['values'], true);
+        foreach ($decodedValues as $value) {
+            $model->values[] = $this->createLevelAttributeValue($value);
+        }
+
+        return $model;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function createLevelAttributeValue(array $data): CategoryLevelAttributeValue
+    {
+        $model = new CategoryLevelAttributeValue();
+        $model->name = (string) $data['name'];
+        $model->id = (string) $data['id'];
+        $model->isLeaf = isset($data['leaf']);
 
         return $model;
     }

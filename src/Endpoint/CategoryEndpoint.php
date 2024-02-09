@@ -8,6 +8,8 @@ use Kyto\Alibaba\Client;
 use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
+use Kyto\Alibaba\Model\CategoryLevelAttribute;
+use Kyto\Alibaba\Model\CategoryLevelAttributeRequest;
 
 class CategoryEndpoint
 {
@@ -67,5 +69,27 @@ class CategoryEndpoint
         }
 
         return $result;
+    }
+
+    /**
+     * Get next-level attribute based on category, attribute and optionally level attribute value ID.
+     * @link https://developer.alibaba.com/en/doc.htm?spm=a2728.12183079.k2mwm9fd.1.4b3630901WuQWY#?docType=2&docId=48659
+     *
+     * @param ?string $valueId provide null to fetch first level
+     */
+    public function getLevelAttribute(string $categoryId, string $attributeId, ?string $valueId = null): CategoryLevelAttribute
+    {
+        $attributeValueRequest = new CategoryLevelAttributeRequest();
+        $attributeValueRequest->categoryId = $categoryId;
+        $attributeValueRequest->attributeId = $attributeId;
+        $attributeValueRequest->valueId = $valueId ?? '0';
+
+        $data = $this->client->request([
+            'method' => 'alibaba.icbu.category.level.attr.get',
+            'attribute_value_request' => json_encode($attributeValueRequest)
+        ]);
+
+        $attribute = $data['alibaba_icbu_category_level_attr_get_response']['result_list'];
+        return $this->categoryFactory->createLevelAttribute($attribute);
     }
 }

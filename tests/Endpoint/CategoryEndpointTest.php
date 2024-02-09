@@ -9,6 +9,8 @@ use Kyto\Alibaba\Endpoint\CategoryEndpoint;
 use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
+use Kyto\Alibaba\Model\CategoryLevelAttribute;
+use Kyto\Alibaba\Model\CategoryLevelAttributeRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -96,6 +98,32 @@ class CategoryEndpointTest extends TestCase
             ->willReturnOnConsecutiveCalls(...$result);
 
         $actual = $this->categoryEndpoint->getAttributes($id);
+        self::assertSame($result, $actual);
+    }
+
+    public function testGetLevelAttributes(): void
+    {
+        $attributeValueRequestBody = '{"cat_id":"1","attr_id":"1","value_id":"0"}';
+        $levelAttribute = ['LevelAttribute'];
+        $data = ['alibaba_icbu_category_level_attr_get_response' => ['result_list' => $levelAttribute]];
+
+        $this->client
+            ->expects(self::once())
+            ->method('request')
+            ->with([
+                'method' => 'alibaba.icbu.category.level.attr.get',
+                'attribute_value_request' => $attributeValueRequestBody,
+            ])
+            ->willReturn($data);
+
+        $result = new CategoryLevelAttribute();
+
+        $this->categoryFactory
+            ->expects(self::once())
+            ->method('createLevelAttribute')
+            ->willReturn($result);
+
+        $actual = $this->categoryEndpoint->getLevelAttribute('1', '1', null);
         self::assertSame($result, $actual);
     }
 }
