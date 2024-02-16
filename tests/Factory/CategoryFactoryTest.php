@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Tests\Factory;
 
+use Kyto\Alibaba\Enum\InputType;
+use Kyto\Alibaba\Enum\ShowType;
+use Kyto\Alibaba\Enum\ValueType;
 use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 use Kyto\Alibaba\Model\CategoryAttributeValue;
+use Kyto\Alibaba\Model\CategoryLevelAttribute;
+use Kyto\Alibaba\Model\CategoryLevelAttributeValue;
 use PHPUnit\Framework\TestCase;
 
 class CategoryFactoryTest extends TestCase
@@ -145,9 +150,9 @@ class CategoryFactoryTest extends TestCase
         $model->id = '1';
         $model->name = 'Example';
         $model->isRequired = true;
-        $model->inputType = 'single_select';
-        $model->showType = 'list_box';
-        $model->valueType = 'string';
+        $model->inputType = InputType::SINGLE_SELECT;
+        $model->showType = ShowType::LIST_BOX;
+        $model->valueType = ValueType::STRING;
         $model->isSku = false;
         $model->hasCustomizeImage = false;
         $model->hasCustomizeValue = false;
@@ -188,9 +193,9 @@ class CategoryFactoryTest extends TestCase
         $model->id = '1';
         $model->name = 'Example';
         $model->isRequired = true;
-        $model->inputType = 'input';
-        $model->showType = 'input';
-        $model->valueType = 'number';
+        $model->inputType = InputType::INPUT;
+        $model->showType = ShowType::INPUT;
+        $model->valueType = ValueType::NUMBER;
         $model->isSku = false;
         $model->hasCustomizeImage = false;
         $model->hasCustomizeValue = false;
@@ -252,5 +257,92 @@ class CategoryFactoryTest extends TestCase
         $cases['no-children'] = [$data, $model];
 
         return $cases;
+    }
+
+    /**
+     * @dataProvider createLevelAttributeDataProvider
+     * @param mixed[] $data
+     */
+    public function testCreateLevelAttribute(array $data, CategoryLevelAttribute $expected): void
+    {
+        $actual = $this->categoryFactory->createLevelAttribute($data);
+        self::assertEquals($expected, $actual);
+    }
+
+    public function createLevelAttributeDataProvider(): \Generator
+    {
+        $data = [
+            'property_id' => '123',
+            'property_en_name' => 'someName',
+            'values' => '{}'
+        ];
+
+        $expected = new CategoryLevelAttribute();
+        $expected->id = '123';
+        $expected->name = 'someName';
+        $expected->values = [];
+
+        yield ['no values' => $data, $expected];
+
+        $data = [
+            'property_id' => '123',
+            'property_en_name' => 'someName',
+            'values' => '[{"id":"1","name":"valueNoLeaf"},{"id":2,"name":"valueIsLeaf","leaf":true}]'
+        ];
+
+        $levelValueNoLeaf = new CategoryLevelAttributeValue();
+        $levelValueNoLeaf->id = '1';
+        $levelValueNoLeaf->name = 'valueNoLeaf';
+        $levelValueNoLeaf->isLeaf = false;
+
+        $levelValueIsLeaf = new CategoryLevelAttributeValue();
+        $levelValueIsLeaf->id = '2';
+        $levelValueIsLeaf->name = 'valueIsLeaf';
+        $levelValueIsLeaf->isLeaf = true;
+
+        $expected = new CategoryLevelAttribute();
+        $expected->id = '123';
+        $expected->name = 'someName';
+        $expected->values = [$levelValueNoLeaf, $levelValueIsLeaf];
+
+        yield ['with values' => $data, $expected];
+    }
+
+    /**
+     * @dataProvider createLevelAttributeValueDataProvider
+     * @param mixed[] $data
+     */
+    public function testCreateLevelAttributeValue(array $data, CategoryLevelAttributeValue $expected): void
+    {
+        $actual = $this->categoryFactory->createLevelAttributeValue($data);
+        self::assertEquals($expected, $actual);
+    }
+
+    public function createLevelAttributeValueDataProvider(): \Generator
+    {
+        $data = [
+            "id" => "1",
+            "name" => "valueNoLeaf"
+        ];
+
+        $expected = new CategoryLevelAttributeValue();
+        $expected->name = 'valueNoLeaf';
+        $expected->id = '1';
+        $expected->isLeaf = false;
+
+        yield ['no leaf' => $data, $expected];
+
+        $data = [
+            "id" => "1",
+            "name" => "valueIsLeaf",
+            "leaf" => true
+        ];
+
+        $expected = new CategoryLevelAttributeValue();
+        $expected->name = 'valueIsLeaf';
+        $expected->id = '1';
+        $expected->isLeaf = true;
+
+        yield ['is leaf' => $data, $expected];
     }
 }

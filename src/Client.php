@@ -96,11 +96,14 @@ class Client
         $errorResponse = $data['error_response'] ?? null;
 
         if ($errorResponse !== null) {
+            $subMessage = $errorResponse['sub_msg'] ?? null;
+            $subCode = $errorResponse['sub_code'] ?? null;
+
             throw new AlibabaException(
                 $errorResponse['msg'],
                 (int) $errorResponse['code'],
-                $errorResponse['sub_msg'],
-                $errorResponse['sub_code'],
+                $subMessage,
+                $subCode,
             );
         }
     }

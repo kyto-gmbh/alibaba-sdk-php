@@ -16,7 +16,10 @@ class AlibabaException extends \RuntimeException
         private ?string $subCode,
         ?\Throwable $previous = null
     ) {
-        $message = sprintf('%s. Sub-code: "%s". Sub-message: "%s".', $message, $this->subCode, $this->subMessage);
+        $subCodePart = $this->subCode !== null ? sprintf(' Sub-code: "%s".', $this->subCode) : null;
+        $subMessagePart = $this->subMessage !== null ? sprintf(' Sub-message: "%s".', $this->subMessage) : null;
+        $message = sprintf('%s.%s%s', $message, $subCodePart, $subMessagePart);
+
         parent::__construct($message, $code, $previous);
     }
 

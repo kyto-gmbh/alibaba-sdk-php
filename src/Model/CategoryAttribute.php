@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Model;
 
+use Kyto\Alibaba\Enum\InputType;
+use Kyto\Alibaba\Enum\ShowType;
+use Kyto\Alibaba\Enum\ValueType;
+
 class CategoryAttribute
 {
     public string $id;
     public string $name;
     public bool $isRequired;
 
-    // TODO: change to enums once all values would be known
-    public string $inputType; // Known values: single_select, multi_select, input
-
-    // Known values: list_box (single_select), check_box (multi_select), input (input), group_table (single_select)
-    public string $showType;
-    public string $valueType; // Known values: string, number
+    public InputType $inputType;
+    public ShowType $showType;
+    public ValueType $valueType;
 
     public bool $isSku;
     public bool $hasCustomizeImage;

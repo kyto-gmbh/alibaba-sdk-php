@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Factory;
 
+use Kyto\Alibaba\Enum\InputType;
+use Kyto\Alibaba\Enum\ShowType;
+use Kyto\Alibaba\Enum\ValueType;
 use Kyto\Alibaba\Model\CategoryLevelAttribute;
 use Kyto\Alibaba\Model\CategoryLevelAttributeValue;
 use Kyto\Alibaba\Util\Formatter;
@@ -46,9 +49,9 @@ class CategoryFactory
         $model->name = (string) $data['en_name'];
         $model->isRequired = (bool) $data['required'];
 
-        $model->inputType = (string) $data['input_type'];
-        $model->showType = (string) $data['show_type'];
-        $model->valueType = (string) $data['value_type'];
+        $model->inputType = InputType::from($data['input_type']);
+        $model->showType = ShowType::from($data['show_type']);
+        $model->valueType = ValueType::from($data['value_type']);
 
         $model->isSku = (bool) $data['sku_attribute'];
         $model->hasCustomizeImage = (bool) $data['customize_image'];

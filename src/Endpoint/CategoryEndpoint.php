@@ -9,7 +9,6 @@ use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 use Kyto\Alibaba\Model\CategoryLevelAttribute;
-use Kyto\Alibaba\Model\CategoryLevelAttributeRequest;
 
 class CategoryEndpoint
 {
@@ -82,10 +81,11 @@ class CategoryEndpoint
         string $attributeId,
         ?string $valueId = null
     ): CategoryLevelAttribute {
-        $attributeValueRequest = new CategoryLevelAttributeRequest();
-        $attributeValueRequest->categoryId = $categoryId;
-        $attributeValueRequest->attributeId = $attributeId;
-        $attributeValueRequest->valueId = $valueId ?? '0';
+        $attributeValueRequest = [
+            'cat_id' => $categoryId,
+            'attr_id' => $attributeId,
+            'value_id' => $valueId ?? '0'
+        ];
 
         $data = $this->client->request([
             'method' => 'alibaba.icbu.category.level.attr.get',
