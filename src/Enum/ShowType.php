@@ -11,4 +11,5 @@ enum ShowType: string
     case INPUT = 'input'; // input (string)
     case INTERVAL = 'interval'; // input (number)
     case LIST_BOX = 'list_box'; // single_select
+    case MODEL_NUMBERS = 'model_numbers'; // input (string)
 }
