@@ -8,6 +8,7 @@ enum ShowType: string
 {
     case CHECK_BOX = 'check_box'; // multi_select
     case GROUP_TABLE = 'group_table'; // single_select
-    case INPUT = 'input'; // input (text)
+    case INPUT = 'input'; // input (string)
+    case INTERVAL = 'interval'; // input (number)
     case LIST_BOX = 'list_box'; // single_select
 }
