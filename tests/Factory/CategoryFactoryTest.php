@@ -282,7 +282,7 @@ class CategoryFactoryTest extends TestCase
         $expected->name = 'someName';
         $expected->values = [];
 
-        yield ['no values' => $data, $expected];
+        yield 'no values' => [$data, $expected];
 
         $data = [
             'property_id' => '123',
@@ -305,7 +305,7 @@ class CategoryFactoryTest extends TestCase
         $expected->name = 'someName';
         $expected->values = [$levelValueNoLeaf, $levelValueIsLeaf];
 
-        yield ['with values' => $data, $expected];
+        yield 'with values' => [$data, $expected];
     }
 
     /**
@@ -330,7 +330,7 @@ class CategoryFactoryTest extends TestCase
         $expected->id = '1';
         $expected->isLeaf = false;
 
-        yield ['no leaf' => $data, $expected];
+        yield 'no leaf' => [$data, $expected];
 
         $data = [
             "id" => "1",
@@ -343,6 +343,6 @@ class CategoryFactoryTest extends TestCase
         $expected->id = '1';
         $expected->isLeaf = true;
 
-        yield ['is leaf' => $data, $expected];
+        yield 'is leaf' => [$data, $expected];
     }
 }

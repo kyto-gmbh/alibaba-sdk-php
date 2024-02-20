@@ -92,7 +92,16 @@ class CategoryEndpoint
             'attribute_value_request' => json_encode($attributeValueRequest)
         ]);
 
-        $attribute = $data['alibaba_icbu_category_level_attr_get_response']['result_list'];
+        $errorMessage = sprintf(
+            'Result list for category id: "%s", attribute id: "%s", value id: "%s" is empty.',
+            $categoryId,
+            $attributeId,
+            $valueId
+        );
+
+        $attribute = $data['alibaba_icbu_category_level_attr_get_response']['result_list']
+            ?? throw new \RuntimeException($errorMessage);
+
         return $this->categoryFactory->createLevelAttribute($attribute);
     }
 }
