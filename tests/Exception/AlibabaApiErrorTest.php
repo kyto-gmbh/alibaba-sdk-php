@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Tests\Exception;
 
-use Kyto\Alibaba\Exception\AlibabaException;
+use Kyto\Alibaba\Exception\AlibabaApiError;
 use PHPUnit\Framework\TestCase;
 
-class AlibabaExceptionTest extends TestCase
+class AlibabaApiErrorTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -17,7 +17,7 @@ class AlibabaExceptionTest extends TestCase
         $subCode = 'sub.code';
         $previous = new \RuntimeException('Previous');
 
-        $exception = new AlibabaException($message, $code, $subMessage, $subCode, $previous);
+        $exception = new AlibabaApiError($message, $code, $subMessage, $subCode, $previous);
 
         self::assertSame('Message. Sub-code: "sub.code". Sub-message: "Sub-message".', $exception->getMessage());
         self::assertSame($code, $exception->getCode());

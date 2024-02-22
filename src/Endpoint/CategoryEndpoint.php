@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Endpoint;
 
 use Kyto\Alibaba\Client;
+use Kyto\Alibaba\Exception\UnexpectedApiResultException;
 use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
@@ -100,7 +101,7 @@ class CategoryEndpoint
         );
 
         $attribute = $data['alibaba_icbu_category_level_attr_get_response']['result_list']
-            ?? throw new \RuntimeException($errorMessage);
+            ?? throw new UnexpectedApiResultException($errorMessage);
 
         return $this->categoryFactory->createLevelAttribute($attribute);
     }
