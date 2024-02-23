@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Exception;
 
-class AlibabaApiError extends AlibabaException
+class AlibabaApiException extends AlibabaException
 {
     /**
      * @internal

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Tests;
 
 use Kyto\Alibaba\Client;
-use Kyto\Alibaba\Exception\AlibabaApiError;
+use Kyto\Alibaba\Exception\AlibabaApiException;
 use Kyto\Alibaba\Util\Clock;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -81,7 +81,7 @@ class ClientTest extends TestCase
         ->willReturn($response);
 
         if (!$isSuccess) {
-            $this->expectException(AlibabaApiError::class);
+            $this->expectException(AlibabaApiException::class);
         }
 
         $actual = $this->client->request(['hello' => 'world', 'test' => 'data']);
