@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Endpoint;
 
 use Kyto\Alibaba\Client;
-use Kyto\Alibaba\Exception\AlibabaApiException;
+use Kyto\Alibaba\Exception\ResponseException;
 use Kyto\Alibaba\Factory\ProductFactory;
 use Kyto\Alibaba\Model\ProductGroup;
 use Kyto\Alibaba\Model\Token;
@@ -34,7 +34,7 @@ class ProductEndpoint
      * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=25299
      *
      * @param ?string $id Provide `null` to fetch root groups
-     * @throws AlibabaApiException
+     * @throws ResponseException
      */
     public function getGroup(Token $token, ?string $id = null): ProductGroup
     {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Endpoint;
 
 use Kyto\Alibaba\Client;
-use Kyto\Alibaba\Exception\AlibabaApiException;
-use Kyto\Alibaba\Exception\UnexpectedApiResultException;
+use Kyto\Alibaba\Exception\ResponseException;
+use Kyto\Alibaba\Exception\UnexpectedResultException;
 use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
@@ -36,7 +36,7 @@ class CategoryEndpoint
      * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=50064
      *
      * @param ?string $id Provide `null` to fetch root categories
-     * @throws AlibabaApiException
+     * @throws ResponseException
      */
     public function get(?string $id = null): Category
     {
@@ -55,7 +55,7 @@ class CategoryEndpoint
      * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=25348
      *
      * @return CategoryAttribute[]
-     * @throws AlibabaApiException
+     * @throws ResponseException
      */
     public function getAttributes(string $categoryId): array
     {
@@ -79,7 +79,7 @@ class CategoryEndpoint
      * @link https://developer.alibaba.com/en/doc.htm?spm=a2728.12183079.k2mwm9fd.1.4b3630901WuQWY#?docType=2&docId=48659
      *
      * @param ?string $valueId provide null to fetch root level
-     * @throws AlibabaApiException | UnexpectedApiResultException
+     * @throws ResponseException|UnexpectedResultException
      */
     public function getLevelAttribute(
         string $categoryId,
@@ -105,7 +105,7 @@ class CategoryEndpoint
         );
 
         $attribute = $data['alibaba_icbu_category_level_attr_get_response']['result_list']
-            ?? throw new UnexpectedApiResultException($errorMessage);
+            ?? throw new UnexpectedResultException($errorMessage);
 
         return $this->categoryFactory->createLevelAttribute($attribute);
     }

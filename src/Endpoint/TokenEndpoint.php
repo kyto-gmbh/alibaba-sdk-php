@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Endpoint;
 
 use Kyto\Alibaba\Client;
-use Kyto\Alibaba\Exception\AlibabaApiException;
+use Kyto\Alibaba\Exception\ResponseException;
 use Kyto\Alibaba\Factory\TokenFactory;
 use Kyto\Alibaba\Model\Token;
 
@@ -33,7 +33,7 @@ class TokenEndpoint
      * @link https://open.taobao.com/api.htm?spm=a219a.7386653.0.0.41449b714zR8KI&docId=25388&docType=2&source=search
      * @see \Kyto\Alibaba\Facade::getAuthorizationUrl
      *
-     * @throws AlibabaApiException|\JsonException
+     * @throws ResponseException|\JsonException
      */
     public function new(string $authorizationCode): Token
     {

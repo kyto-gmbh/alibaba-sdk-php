@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba\Tests\Exception;
 
-use Kyto\Alibaba\Exception\UnexpectedApiResultException;
+use Kyto\Alibaba\Exception\UnexpectedResultException;
 use PHPUnit\Framework\TestCase;
 
-class UnexpectedApiResultExceptionTest extends TestCase
+class UnexpectedResultExceptionTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -15,7 +15,7 @@ class UnexpectedApiResultExceptionTest extends TestCase
         $code = 1;
         $previous = new \RuntimeException('Previous');
 
-        $exception = new UnexpectedApiResultException($message, $code, $previous);
+        $exception = new UnexpectedResultException($message, $code, $previous);
 
         self::assertSame('Message', $exception->getMessage());
         self::assertSame($code, $exception->getCode());
