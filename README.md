@@ -37,7 +37,8 @@ facade
 │  └─ new                  - Obtain new session token
 ├─ category/           - Category endpoint
 │  ├─ get                  - Get product listing category
-│  └─ getAttributes        - Get system-defined attributes based on category ID
+│  ├─ getAttributes        - Get system-defined attributes based on category ID
+│  └─ getLevelAttribute    - Get next-level attribute based on category, attribute and value ID (e.g. car_model values)
 └─ product/            - Product endpoint
    └─ getGroup             - Get product group
 ```

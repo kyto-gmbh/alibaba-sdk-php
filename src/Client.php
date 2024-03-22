@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kyto\Alibaba;
 
-use Kyto\Alibaba\Exception\AlibabaException;
+use Kyto\Alibaba\Exception\ResponseException;
 use Kyto\Alibaba\Util\Clock;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -96,7 +96,7 @@ class Client
         $errorResponse = $data['error_response'] ?? null;
 
         if ($errorResponse !== null) {
-            throw new AlibabaException(
+            throw new ResponseException(
                 $errorResponse['msg'],
                 (int) $errorResponse['code'],
                 $errorResponse['sub_msg'],
