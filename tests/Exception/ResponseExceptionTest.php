@@ -11,18 +11,23 @@ class ResponseExceptionTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $message = 'Message';
-        $code = 1;
-        $subMessage = 'Sub-message';
-        $subCode = 'sub.code';
+        $type = 'SYSTEM';
+        $message = 'Error happened please fix';
+        $errorCode = 'ErrorHappened';
+        $requestId = '2101d05f17144750947504007';
+        $traceId = '21032cac17144750947448194e339b';
         $previous = new \RuntimeException('Previous');
 
-        $exception = new ResponseException($message, $code, $subMessage, $subCode, $previous);
+        $exception = new ResponseException($type, $message, $errorCode, $requestId, $traceId, $previous);
 
-        self::assertSame('Message. Sub-code: "sub.code". Sub-message: "Sub-message".', $exception->getMessage());
-        self::assertSame($code, $exception->getCode());
-        self::assertSame($subMessage, $exception->getSubMessage());
-        self::assertSame($subCode, $exception->getSubCode());
+        $expectedMessage = 'ErrorHappened. Error happened please fix. Request id: "2101d05f17144750947504007". '
+            . 'Trace id: "21032cac17144750947448194e339b".';
+        self::assertSame($expectedMessage, $exception->getMessage());
+
+        self::assertSame($type, $exception->getType());
+        self::assertSame($errorCode, $exception->getErrorCode());
+        self::assertSame($requestId, $exception->getRequestId());
+        self::assertSame($traceId, $exception->getTraceId());
         self::assertSame($previous, $exception->getPrevious());
     }
 }

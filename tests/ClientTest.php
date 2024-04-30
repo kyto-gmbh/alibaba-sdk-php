@@ -14,8 +14,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class ClientTest extends TestCase
 {
-    private const API_KEY = 'api-key';
-    private const API_SECRET = 'api-secret';
+    private const KEY = 'app-key';
+    private const SECRET = 'app-secret';
 
     private MockObject $httpClient;
     private MockObject $clock;
@@ -25,7 +25,7 @@ class ClientTest extends TestCase
     {
         $this->httpClient = $this->createMock(HttpClientInterface::class);
         $this->clock = $this->createMock(Clock::class);
-        $this->client = new Client(self::API_KEY, self::API_SECRET, $this->httpClient, $this->clock);
+        $this->client = new Client(self::KEY, self::SECRET, $this->httpClient, $this->clock);
     }
 
     public function tearDown(): void
@@ -41,10 +41,10 @@ class ClientTest extends TestCase
      * @dataProvider requestDataProvider
      * @param mixed[] $responseData
      */
-    public function testRequest(bool $isSuccess, array $responseData): void
+    public function testRequest(bool $isSuccess, string $endpoint, array $responseData): void
     {
-        $timestamp = '2022-11-11 12:37:45';
-        $timezone = 'GMT+8';
+        $timestamp = '2024-04-30 18:17:25';
+        $timezone = 'UTC';
         $datetime = \DateTime::createFromFormat('Y-m-d H:i:s', $timestamp, new \DateTimeZone($timezone));
 
         $this->clock
@@ -61,20 +61,18 @@ class ClientTest extends TestCase
             ->method('request')
             ->with(
                 'POST',
-                'https://api.taobao.com/router/rest',
+                'https://openapi-api.alibaba.com/rest/some/endpoint',
                 [
                     'headers' => [
                         'User-Agent' => 'Kyto Alibaba Client',
                     ],
                     'body' => [
-                        'app_key' => self::API_KEY,
-                        'timestamp' => $timestamp,
-                        'format' => 'json',
-                        'v' => '2.0',
+                        'app_key' => self::KEY,
+                        'timestamp' => '1714501045000',
                         'hello' => 'world',
                         'test' => 'data',
-                        'sign_method' => 'md5',
-                        'sign' => 'E6B0CBA032759D6C2A4BC0136252672F',
+                        'sign_method' => 'sha256',
+                        'sign' => '99486884A406C07BC1EF420C886F8422B3FE18BD7420CF9CB65B82027430BF7C',
                     ]
                 ]
             )
@@ -84,7 +82,7 @@ class ClientTest extends TestCase
             $this->expectException(ResponseException::class);
         }
 
-        $actual = $this->client->request(['hello' => 'world', 'test' => 'data']);
+        $actual = $this->client->request($endpoint, ['hello' => 'world', 'test' => 'data']);
         self::assertSame($responseData, $actual);
     }
 
@@ -94,13 +92,15 @@ class ClientTest extends TestCase
     public function requestDataProvider(): array
     {
         return [
-            'success' => [true, ['successful' => 'response']],
-            'error' => [false, ['error_response' => [
-                'code' => '1',
-                'msg' => 'Error happened',
-                'sub_code' => 'api.error',
-                'sub_msg' => 'Not working'
-            ]]],
+            'success' => [true, '/some/endpoint', ['successful' => 'response']],
+            'success, no slash prefix endpoint' => [true, 'some/endpoint', ['successful' => 'response']],
+            'error' => [false, '/some/endpoint', [
+                'type' => 'ISP',
+                'code' => 'ErrorHappened',
+                'message' => 'Error happened please fix',
+                'request_id' => '2101d05f17144750947504007',
+                '_trace_id_' => '21032cac17144750947448194e339b'
+            ]],
         ];
     }
 }

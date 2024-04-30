@@ -14,7 +14,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class Client
 {
     public function __construct(
-        private string $apiKey,
+        private string $key,
         private string $secret,
         private HttpClientInterface $httpClient,
         private Clock $clock,
@@ -27,12 +27,13 @@ class Client
      * @param mixed[] $payload JSON serializable data
      * @return mixed[] Decoded JSON as associative array
      */
-    public function request(array $payload): array
+    public function request(string $endpoint, array $payload): array
     {
+        $endpoint = str_starts_with($endpoint, '/') ? $endpoint : '/' . $endpoint;
         $headers = ['User-Agent' => 'Kyto Alibaba Client'];
-        $body = $this->getBody($payload);
+        $body = $this->getBody($endpoint, $payload);
 
-        $response = $this->httpClient->request('POST', 'https://api.taobao.com/router/rest', [
+        $response = $this->httpClient->request('POST', 'https://openapi-api.alibaba.com/rest' . $endpoint, [
             'headers' => $headers,
             'body' => $body,
         ]);
@@ -46,46 +47,45 @@ class Client
      * @param mixed[] $payload
      * @return mixed[]
      */
-    private function getBody(array $payload): array
+    private function getBody(string $endpoint, array $payload): array
     {
         $payload = array_merge([
-            'app_key' => $this->apiKey,
+            'app_key' => $this->key,
             'timestamp' => $this->getTimestamp(),
-            'format' => 'json',
-            'v' => '2.0',
         ], $payload);
 
-        return $this->getSignedBody($payload);
+        return $this->getSignedBody($endpoint, $payload);
     }
 
     /**
      * All API calls must include a valid signature. Requests with invalid signatures will be rejected.
+     * @link https://openapi.alibaba.com/doc/doc.htm?docId=19#/?docId=60
+     * @link https://openapi.alibaba.com/doc/doc.htm?docId=19#/?docId=58
      *
      * @param mixed[] $body
      * @return mixed[] Same body plus "sign_method" and "sign" values
      */
-    private function getSignedBody(array $body): array
+    private function getSignedBody(string $endpoint, array $body): array
     {
         unset($body['sign']);
-        $body['sign_method'] = 'md5';
-
+        $body['sign_method'] = 'sha256';
         ksort($body);
-        $hashString = '';
+
+        $hashString = $endpoint;
         foreach ($body as $key => $value) {
             $hashString .= $key . $value;
         }
-        $hashString = $this->secret . $hashString . $this->secret;
 
-        $body['sign'] = mb_strtoupper(md5($hashString));
+        $body['sign'] = strtoupper(hash_hmac('sha256', $hashString, $this->secret));
         return $body;
     }
 
     /**
-     * Required by Alibaba API specs to be in GMT+8 timezone
+     * Required by Alibaba to be in microseconds and (seems like) in UTC timezone.
      */
     private function getTimestamp(): string
     {
-        return $this->clock->now('GMT+8')->format('Y-m-d H:i:s');
+        return $this->clock->now('UTC')->format('Uv');
     }
 
     /**
@@ -93,14 +93,13 @@ class Client
      */
     private function throwOnError(array $data): void
     {
-        $errorResponse = $data['error_response'] ?? null;
-
-        if ($errorResponse !== null) {
+        if (isset($data['type'], $data['code'])) {
             throw new ResponseException(
-                $errorResponse['msg'],
-                (int) $errorResponse['code'],
-                $errorResponse['sub_msg'],
-                $errorResponse['sub_code'],
+                $data['type'],
+                $data['message'],
+                $data['code'],
+                $data['request_id'],
+                $data['_trace_id_'],
             );
         }
     }
