@@ -1,7 +1,7 @@
 # Alibaba SDK
 [![build](https://github.com/kyto-gmbh/alibaba-sdk-php/actions/workflows/build.yml/badge.svg)](https://github.com/kyto-gmbh/alibaba-sdk-php/actions/workflows/build.yml)
 
-Alibaba SDK for PHP. This package provides a structured interface to communicate with [Alibaba Open Platform](https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=1&docId=118496).
+Alibaba SDK for PHP. This package provides a structured interface to communicate with [Alibaba Open Platform](https://openapi.alibaba.com/doc/doc.htm?spm=a2o9m.11223882.0.0.1566722cTOuz7W#/?docId=19).
 
 > Note, package is in development therefore public interface could be changed in future releases.
 
@@ -23,7 +23,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Kyto\Alibaba\Facade;
 
-$alibaba = Facade::create('api-key', 'api-secret');
+$alibaba = Facade::create('app-key', 'app-secret');
 $alibaba->category->get('0'); // @return Kyto\Alibaba\Model\Category
 ```
 
