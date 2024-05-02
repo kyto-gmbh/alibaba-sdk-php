@@ -5,40 +5,48 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Factory;
 
 use Kyto\Alibaba\Model\Token;
+use Kyto\Alibaba\Util\Clock;
 
+/**
+ * @internal
+ */
 class TokenFactory
 {
+    public function __construct(
+        private Clock $clock,
+    ) {
+    }
+
     /**
      * @param mixed[] $data
      */
     public function createToken(array $data): Token
     {
-        $jsonResult = $data['top_auth_token_create_response']['token_result'];
-        $token = json_decode($jsonResult, true, 512, JSON_THROW_ON_ERROR);
+        $baseDatetime = $this->clock->now();
 
         $model = new Token();
-        $model->userId = (string) $token['user_id'];
-        $model->userName = $token['user_nick'] ?? null;
+        $model->account = (string) $data['account'];
 
-        $model->token = (string) $token['access_token'];
-        $model->tokenExpireAt = $this->getMillisecondsAsDateTime((int) $token['expire_time']);
+        $model->token = (string) $data['access_token'];
+        $model->tokenExpireAt = $this->getExpiresInAsDateTime($baseDatetime, (int) $data['expires_in']);
 
-        $model->refreshToken = (string) $token['refresh_token'];
-        $model->refreshTokenExpireAt = $this->getMillisecondsAsDateTime((int) $token['refresh_token_valid_time']);
+        $model->refreshToken = (string) $data['refresh_token'];
+        $model->refreshTokenExpireAt = $this->getExpiresInAsDateTime($baseDatetime, (int) $data['refresh_expires_in']);
 
         return $model;
     }
 
     /**
-     * @param int $milliseconds Alibaba provides Unix time in milliseconds
+     * It is recommended by the Alibaba API docs to refresh the token 30 minutes before it expires.
+     * @link https://openapi.alibaba.com/doc/doc.htm?spm=a2o9m.11223882.0.0.1566722cTOuz7W#/?docId=56
      */
-    private function getMillisecondsAsDateTime(int $milliseconds): \DateTimeImmutable
+    private function getExpiresInAsDateTime(\DateTime $baseDatetime, int $expiresIn): \DateTimeImmutable
     {
-        $value = (string) ($milliseconds / 1000);
-        $datetime = \DateTimeImmutable::createFromFormat('U.u', $value);
-        if ($datetime === false) {
-            throw new \UnexpectedValueException(sprintf('Unable to parse "%s" as microtime.', $milliseconds));
-        }
-        return $datetime;
+        $recommendedExpire = (int) ($expiresIn - (30 * 60)); // 30 minutes before actual expiration
+        $expiresIn = $recommendedExpire > 0 ? $recommendedExpire : $expiresIn;
+
+        $modifier = sprintf('+%d seconds', $expiresIn);
+        $datetime = (clone $baseDatetime)->modify($modifier);
+        return \DateTimeImmutable::createFromInterface($datetime);
     }
 }

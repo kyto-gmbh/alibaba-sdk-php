@@ -6,8 +6,7 @@ namespace Kyto\Alibaba\Model;
 
 class Token
 {
-    public string $userId;
-    public ?string $userName;
+    public string $account;
 
     public string $token;
     public \DateTimeImmutable $tokenExpireAt;
