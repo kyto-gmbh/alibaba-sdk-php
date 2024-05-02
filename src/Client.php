@@ -39,7 +39,7 @@ class Client
         ]);
 
         $data = $response->toArray();
-        $this->throwOnError($data);
+        $this->throwOnError($endpoint, $data);
         return $data;
     }
 
@@ -91,10 +91,11 @@ class Client
     /**
      * @param mixed[] $data
      */
-    private function throwOnError(array $data): void
+    private function throwOnError(string $endpoint, array $data): void
     {
         if (isset($data['type'], $data['code'])) {
             throw new ResponseException(
+                $endpoint,
                 $data['type'],
                 $data['message'],
                 $data['code'],

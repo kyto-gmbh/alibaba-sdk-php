@@ -14,6 +14,7 @@ class ResponseException extends AlibabaException
      * @internal
      */
     public function __construct(
+        private string $endpoint,
         private string $type,
         string $message,
         private string $erorrCode,
@@ -22,13 +23,19 @@ class ResponseException extends AlibabaException
         ?\Throwable $previous = null
     ) {
         $message = sprintf(
-            '%s. %s. Request id: "%s". Trace id: "%s".',
+            '[%s] %s. Endpoint: "%s". Request id: "%s". Trace id: "%s".',
             $this->erorrCode,
             $message,
+            $this->endpoint,
             $this->requestId,
             $this->traceId,
         );
         parent::__construct($message, 0, $previous);
+    }
+
+    public function getEndpoint(): string
+    {
+        return $this->endpoint;
     }
 
     /**
