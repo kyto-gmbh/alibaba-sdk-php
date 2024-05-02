@@ -24,7 +24,7 @@ class CategoryFactory
      */
     public function createCategory(array $data): Category
     {
-        $category = $data['alibaba_icbu_category_get_new_response']['category'];
+        $category = $data['result']['result'];
 
         $model = new Category();
         $model->id = (string) $category['category_id'];
@@ -32,8 +32,8 @@ class CategoryFactory
         $model->nameCN = (string) ($category['cn_name'] ?? '');
         $model->level = (int) $category['level'];
         $model->isLeaf = (bool) $category['leaf_category'];
-        $model->parents = Formatter::getAsArrayOfString($category['parent_ids']['number'] ?? []);
-        $model->children = Formatter::getAsArrayOfString($category['child_ids']['number'] ?? []);
+        $model->parents = Formatter::getAsArrayOfString($category['parent_ids'] ?? []);
+        $model->children = Formatter::getAsArrayOfString($category['child_ids'] ?? []);
 
         return $model;
     }

@@ -11,6 +11,7 @@ use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 use Kyto\Alibaba\Model\CategoryLevelAttribute;
+use Kyto\Alibaba\Model\Token;
 
 class CategoryEndpoint
 {
@@ -33,18 +34,18 @@ class CategoryEndpoint
 
     /**
      * Get product listing category
-     * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=50064
+     * @link https://openapi.alibaba.com/doc/api.htm?spm=a2o9m.11223882.0.0.1566722cTOuz7W#/api?cid=1&path=/icbu/product/category/get&methodType=GET/POST
      *
      * @param ?string $id Provide `null` to fetch root categories
      * @throws ResponseException
      */
-    public function get(?string $id = null): Category
+    public function get(Token $token, ?string $id = null): Category
     {
         $id = $id ?? '0'; // '0' to fetch root categories
 
-        $data = $this->client->request([
-            'method' => 'alibaba.icbu.category.get.new',
-            'cat_id' => $id
+        $data = $this->client->request('/icbu/product/category/get', [
+            'access_token' => $token->token,
+            'cat_id' => $id,
         ]);
 
         return $this->categoryFactory->createCategory($data);

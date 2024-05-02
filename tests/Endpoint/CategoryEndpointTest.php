@@ -10,6 +10,7 @@ use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\CategoryAttribute;
 use Kyto\Alibaba\Model\CategoryLevelAttribute;
+use Kyto\Alibaba\Model\Token;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -43,16 +44,20 @@ class CategoryEndpointTest extends TestCase
 
     public function testGet(): void
     {
+        $accessToken = 'access-token';
         $id = '1';
         $data = ['response' => 'data'];
 
         $this->client
             ->expects(self::once())
             ->method('request')
-            ->with([
-                'method' => 'alibaba.icbu.category.get.new',
-                'cat_id' => $id,
-            ])
+            ->with(
+                '/icbu/product/category/get',
+                [
+                    'access_token' => $accessToken,
+                    'cat_id' => $id,
+                ]
+            )
             ->willReturn($data);
 
         $category = new Category();
@@ -63,7 +68,10 @@ class CategoryEndpointTest extends TestCase
             ->with($data)
             ->willReturn($category);
 
-        $actual = $this->categoryEndpoint->get($id);
+        $token = new Token();
+        $token->token = $accessToken;
+
+        $actual = $this->categoryEndpoint->get($token, $id);
         self::assertSame($category, $actual);
     }
 

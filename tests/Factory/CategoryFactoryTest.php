@@ -42,22 +42,20 @@ class CategoryFactoryTest extends TestCase
     }
 
     /**
-     * @return mixed[]
+     * @return \Generator<mixed>
      */
-    public function createCategoryDataProvider(): array
+    public function createCategoryDataProvider(): \Generator
     {
-        $cases = [];
-
         $data = [
-            'alibaba_icbu_category_get_new_response' => [
-                'category' => [
+            'result' => [
+                'result' => [
                     'category_id' => 1,
                     'name' => 'Example',
                     'cn_name' => '例子',
                     'level' => 2,
                     'leaf_category' => false,
-                    'parent_ids' => ['number' => [2, 3]],
-                    'child_ids' => ['number' => [4, 5]],
+                    'parent_ids' => [2, 3],
+                    'child_ids' => [4, 5],
                 ],
             ],
         ];
@@ -71,11 +69,11 @@ class CategoryFactoryTest extends TestCase
         $model->parents = ['2', '3'];
         $model->children = ['4', '5'];
 
-        $cases['full-result'] = [$data, $model];
+        yield 'full-result' => [$data, $model];
 
         $data = [
-            'alibaba_icbu_category_get_new_response' => [
-                'category' => [
+            'result' => [
+                'result' => [
                     'category_id' => 1,
                     'name' => 'Example',
                     'cn_name' => '例子',
@@ -94,9 +92,7 @@ class CategoryFactoryTest extends TestCase
         $model->parents = [];
         $model->children = [];
 
-        $cases['no-parents-and-children'] = [$data, $model];
-
-        return $cases;
+        yield 'no-parents-and-children' => [$data, $model];
     }
 
     /**
