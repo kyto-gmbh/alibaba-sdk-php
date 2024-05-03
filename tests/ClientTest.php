@@ -94,10 +94,19 @@ class ClientTest extends TestCase
         return [
             'success' => [true, '/some/endpoint', ['successful' => 'response']],
             'success, no slash prefix endpoint' => [true, 'some/endpoint', ['successful' => 'response']],
-            'error' => [false, '/some/endpoint', [
+            'error 1' => [false, '/some/endpoint', [
                 'type' => 'ISP',
                 'code' => 'ErrorHappened',
                 'message' => 'Error happened please fix',
+                'request_id' => '2101d05f17144750947504007',
+                '_trace_id_' => '21032cac17144750947448194e339b'
+            ]],
+            'error 2' => [false, '/some/endpoint', [
+                'result' => [
+                    'success' => false,
+                    'message_info' => 'Error happened please fix',
+                    'msg_code' => 'isp.error-happened',
+                ],
                 'request_id' => '2101d05f17144750947504007',
                 '_trace_id_' => '21032cac17144750947448194e339b'
             ]],

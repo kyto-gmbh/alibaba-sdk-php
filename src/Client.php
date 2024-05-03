@@ -103,5 +103,16 @@ class Client
                 $data['_trace_id_'],
             );
         }
+
+        if (isset($data['result']['success']) && (bool) $data['result']['success'] !== true) {
+            throw new ResponseException(
+                $endpoint,
+                'SYSTEM',
+                $data['result']['message_info'],
+                $data['result']['msg_code'],
+                $data['request_id'],
+                $data['_trace_id_'],
+            );
+        }
     }
 }
