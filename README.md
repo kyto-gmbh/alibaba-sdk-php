@@ -39,7 +39,7 @@ facade
 ├─ category/           - Category endpoint
 │  └─ get                  - Get product listing category
 └─ product/            - Product endpoint
-   └─ getGroup             - Get product group
+   └─ getSchema            - Get rules and fields for new product release
 ```
 
 ## Credits

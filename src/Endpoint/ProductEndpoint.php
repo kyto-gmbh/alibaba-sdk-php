@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Endpoint;
 
 use Kyto\Alibaba\Client;
-use Kyto\Alibaba\Exception\ResponseException;
 use Kyto\Alibaba\Factory\ProductFactory;
-use Kyto\Alibaba\Model\ProductGroup;
+use Kyto\Alibaba\Model\Category;
 use Kyto\Alibaba\Model\Token;
 
 class ProductEndpoint
@@ -25,27 +24,28 @@ class ProductEndpoint
      */
     public function __construct(
         private Client $client,
-        private ProductFactory $productFactory,
+        private ProductFactory $productFactory, // @phpstan-ignore-line
     ) {
     }
 
     /**
-     * Get product group information.
-     * @link https://developer.alibaba.com/en/doc.htm?spm=a219a.7629140.0.0.188675fe5JPvEa#?docType=2&docId=25299
+     * Obtain the page rules and fill-in fields for new product release.
+     * @link https://openapi.alibaba.com/doc/api.htm?spm=a2o9m.11193531.0.0.2fabf453CIh7hC#/api?cid=1&path=/alibaba/icbu/product/schema/get&methodType=GET/POST
      *
-     * @param ?string $id Provide `null` to fetch root groups
-     * @throws ResponseException
+     * @param string $language Allowed values are not documented in the API docs.
+     *                         Seems like uses the same locale codes as on Alibaba website:
+     *                         en_US, es_ES, fr_FR, it_IT, de_DE, pt_PT, ru_RU, ja_JP,
+     *                         ar_SA, ko_KR, tr_TR, vi_VN, th_TH, id_ID, he_IL, hi_IN, zh_CN
+     * @return array<mixed>
      */
-    public function getGroup(Token $token, ?string $id = null): ProductGroup
+    public function getSchema(Token $token, Category $category, string $language = 'en_US'): array
     {
-        $id = $id ?? '-1'; // '-1' to fetch root groups
-
-        $data = $this->client->request([
-            'method' => 'alibaba.icbu.product.group.get',
-            'session' => $token->token,
-            'group_id' => $id
+        $data = $this->client->request('/alibaba/icbu/product/schema/get', [
+            'cat_id' => $category->id,
+            'access_token' => $token->token,
+            'language' => $language,
         ]);
 
-        return $this->productFactory->createGroup($data);
+        return $data; // TODO: Add normalized model for response
     }
 }
