@@ -42,10 +42,12 @@ class FacadeTest extends TestCase
         $callbackURL = 'https://example.com/callback';
         $actual = $this->facade->getAuthorizationUrl($callbackURL);
         $expected = sprintf(
-            'https://oauth.alibaba.com/authorize?response_type=code&client_id=%s&redirect_uri=%s'
-                . '&State=1212&view=web&sp=ICBU',
-            urlencode(self::API_KEY),
+            'https://openapi-auth.alibaba.com/oauth/authorize'
+                . '?response_type=code'
+                . '&redirect_uri=%s'
+                . '&client_id=%s',
             urlencode($callbackURL),
+            urlencode(self::API_KEY),
         );
 
         self::assertSame($expected, $actual);
