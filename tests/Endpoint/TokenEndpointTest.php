@@ -47,10 +47,12 @@ class TokenEndpointTest extends TestCase
         $this->client
             ->expects(self::once())
             ->method('request')
-            ->with([
-                'method' => 'taobao.top.auth.token.create',
-                'code' => $authorizationCode,
-            ])
+            ->with(
+                '/auth/token/create',
+                [
+                    'code' => $authorizationCode,
+                ]
+            )
             ->willReturn($data);
 
         $token = new Token();
@@ -63,5 +65,37 @@ class TokenEndpointTest extends TestCase
 
         $actual = $this->tokenEndpoint->new($authorizationCode);
         self::assertSame($token, $actual);
+    }
+
+    public function testRefresh(): void
+    {
+        $refreshToken = 'refresh-token';
+        $data = ['response' => 'data', 'account' => 'user@example.com'];
+
+        $token = new Token();
+        $token->account = 'user@example.com';
+        $token->refreshToken = $refreshToken;
+
+        $this->client
+            ->expects(self::once())
+            ->method('request')
+            ->with(
+                '/auth/token/refresh',
+                [
+                    'refresh_token' => $refreshToken,
+                ]
+            )
+            ->willReturn($data);
+
+        $expected = new Token();
+
+        $this->tokenFactory
+            ->expects(self::once())
+            ->method('createToken')
+            ->with($data)
+            ->willReturn($expected);
+
+        $actual = $this->tokenEndpoint->refresh($token);
+        self::assertSame($expected, $actual);
     }
 }

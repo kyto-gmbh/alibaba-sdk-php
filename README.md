@@ -34,7 +34,8 @@ Currently implemented endpoints:
 facade
 ├─ getAuthorizationUrl - Get user authorization url
 ├─ token/              - Token endpoint
-│  └─ new                  - Obtain new session token
+│  ├─ new                  - Obtain new access token
+│  └─ refresh              - Refresh access token
 ├─ category/           - Category endpoint
 │  ├─ get                  - Get product listing category
 │  ├─ getAttributes        - Get system-defined attributes based on category ID

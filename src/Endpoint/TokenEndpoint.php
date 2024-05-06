@@ -34,13 +34,31 @@ class TokenEndpoint
      * @link https://openapi.alibaba.com/doc/api.htm?spm=a2o9m.11193531.0.0.2fabf453xGO6n7#/api?cid=4&path=/auth/token/create&methodType=GET/POST
      * @see \Kyto\Alibaba\Facade::getAuthorizationUrl
      *
-     * @throws ResponseException|\JsonException
+     * @throws ResponseException
      */
     public function new(string $authorizationCode): Token
     {
         $data = $this->client->request('/auth/token/create', [
             'code' => $authorizationCode,
         ]);
+
+        return $this->tokenFactory->createToken($data);
+    }
+
+    /**
+     * @link https://openapi.alibaba.com/doc/api.htm?spm=a2o9m.11193531.0.0.2fabf453CIh7hC#/api?cid=4&path=/auth/token/refresh&methodType=GET/POST
+     *
+     * @throws ResponseException
+     */
+    public function refresh(Token $token): Token
+    {
+        $data = $this->client->request('/auth/token/refresh', [
+            'refresh_token' => $token->refreshToken,
+        ]);
+
+        if (!isset($data['account'])) {
+            $data['account'] = $token->account;
+        }
 
         return $this->tokenFactory->createToken($data);
     }
