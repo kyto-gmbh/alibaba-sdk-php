@@ -27,6 +27,8 @@ $alibaba = Facade::create('app-key', 'app-secret');
 $alibaba->category->get('0'); // @return Kyto\Alibaba\Model\Category
 ```
 
+> For the API usage workflow see [Alibaba API Workflow](docs/workflow.md).
+
 ## Endpoints
 Currently implemented endpoints:
 
