@@ -13,6 +13,7 @@ use Kyto\Alibaba\Model\CategoryAttribute;
 use Kyto\Alibaba\Model\CategoryAttributeValue;
 use Kyto\Alibaba\Model\CategoryLevelAttribute;
 use Kyto\Alibaba\Model\CategoryLevelAttributeValue;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CategoryFactoryTest extends TestCase
@@ -31,20 +32,14 @@ class CategoryFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider createCategoryDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createCategoryDataProvider')]
     public function testCreateCategory(array $data, Category $expected): void
     {
         $actual = $this->categoryFactory->createCategory($data);
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function createCategoryDataProvider(): array
+    public static function createCategoryDataProvider(): array
     {
         $cases = [];
 
@@ -99,20 +94,14 @@ class CategoryFactoryTest extends TestCase
         return $cases;
     }
 
-    /**
-     * @dataProvider createAttributeDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createAttributeDataProvider')]
     public function testCreateAttribute(array $data, CategoryAttribute $expected): void
     {
         $actual = $this->categoryFactory->createAttribute($data);
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function createAttributeDataProvider(): array
+    public static function createAttributeDataProvider(): array
     {
         $cases = [];
 
@@ -208,20 +197,14 @@ class CategoryFactoryTest extends TestCase
         return $cases;
     }
 
-    /**
-     * @dataProvider createAttributeValueDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createAttributeValueDataProvider')]
     public function testCreateAttributeValue(array $data, CategoryAttributeValue $expected): void
     {
         $actual = $this->categoryFactory->createAttributeValue($data);
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function createAttributeValueDataProvider(): array
+    public static function createAttributeValueDataProvider(): array
     {
         $cases = [];
 
@@ -259,17 +242,14 @@ class CategoryFactoryTest extends TestCase
         return $cases;
     }
 
-    /**
-     * @dataProvider createLevelAttributeDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createLevelAttributeDataProvider')]
     public function testCreateLevelAttribute(array $data, CategoryLevelAttribute $expected): void
     {
         $actual = $this->categoryFactory->createLevelAttribute($data);
         self::assertEquals($expected, $actual);
     }
 
-    public function createLevelAttributeDataProvider(): \Generator
+    public static function createLevelAttributeDataProvider(): \Generator
     {
         $data = [
             'property_id' => '123',
@@ -308,17 +288,14 @@ class CategoryFactoryTest extends TestCase
         yield 'with values' => [$data, $expected];
     }
 
-    /**
-     * @dataProvider createLevelAttributeValueDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createLevelAttributeValueDataProvider')]
     public function testCreateLevelAttributeValue(array $data, CategoryLevelAttributeValue $expected): void
     {
         $actual = $this->categoryFactory->createLevelAttributeValue($data);
         self::assertEquals($expected, $actual);
     }
 
-    public function createLevelAttributeValueDataProvider(): \Generator
+    public static function createLevelAttributeValueDataProvider(): \Generator
     {
         $data = [
             "id" => "1",
