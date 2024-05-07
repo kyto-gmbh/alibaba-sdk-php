@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kyto\Alibaba\Tests\Util;
 
 use Kyto\Alibaba\Util\Clock;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ClockTest extends TestCase
@@ -23,9 +24,7 @@ class ClockTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider nowDataProvider
-     */
+    #[DataProvider('nowDataProvider')]
     public function testNow(?string $timezoneName, ?\DateTimeZone $timezone): void
     {
         $actual = $this->clock->now($timezoneName);
@@ -37,10 +36,7 @@ class ClockTest extends TestCase
         );
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function nowDataProvider(): array
+    public static function nowDataProvider(): array
     {
         return [
             'default timezone' => [null, null],

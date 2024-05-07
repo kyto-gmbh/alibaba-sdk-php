@@ -6,3 +6,10 @@ parameters:
         - tests
 
     reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        -
+          message: '#return type has no value type specified in iterable type array.#'
+          path: tests/*Test.php
+        -
+          message: '#with no value type specified in iterable type array.#'
+          path: tests/*Test.php

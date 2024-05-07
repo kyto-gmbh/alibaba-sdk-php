@@ -7,6 +7,7 @@ namespace Kyto\Alibaba\Tests;
 use Kyto\Alibaba\Client;
 use Kyto\Alibaba\Exception\ResponseException;
 use Kyto\Alibaba\Util\Clock;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -37,10 +38,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider requestDataProvider
-     * @param mixed[] $responseData
-     */
+    #[DataProvider('requestDataProvider')]
     public function testRequest(bool $isSuccess, string $endpoint, array $responseData): void
     {
         $timestamp = '2024-04-30 18:17:25';
@@ -86,10 +84,7 @@ class ClientTest extends TestCase
         self::assertSame($responseData, $actual);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function requestDataProvider(): array
+    public static function requestDataProvider(): array
     {
         return [
             'success' => [true, '/some/endpoint', ['successful' => 'response']],

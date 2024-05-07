@@ -6,6 +6,7 @@ namespace Kyto\Alibaba\Tests\Factory;
 
 use Kyto\Alibaba\Factory\CategoryFactory;
 use Kyto\Alibaba\Model\Category;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CategoryFactoryTest extends TestCase
@@ -24,20 +25,14 @@ class CategoryFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider createCategoryDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createCategoryDataProvider')]
     public function testCreateCategory(array $data, Category $expected): void
     {
         $actual = $this->categoryFactory->createCategory($data);
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @return \Generator<mixed>
-     */
-    public function createCategoryDataProvider(): \Generator
+    public static function createCategoryDataProvider(): \Generator
     {
         $data = [
             'result' => [
