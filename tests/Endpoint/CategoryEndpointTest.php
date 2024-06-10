@@ -93,8 +93,10 @@ class CategoryEndpointTest extends TestCase
         $this->categoryFactory
             ->expects(self::exactly(2))
             ->method('createAttribute')
-            ->withConsecutive(...array_map(static fn($item) => [$item], $attributes))
-            ->willReturnOnConsecutiveCalls(...$result);
+            ->willReturnMap([
+                [['Attribute 1'], $result[0]],
+                [['Attribute 2'], $result[1]],
+            ]);
 
         $actual = $this->categoryEndpoint->getAttributes($id);
         self::assertSame($result, $actual);

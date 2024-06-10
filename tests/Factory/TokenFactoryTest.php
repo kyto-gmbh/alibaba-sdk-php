@@ -6,6 +6,7 @@ namespace Kyto\Alibaba\Tests\Factory;
 
 use Kyto\Alibaba\Factory\TokenFactory;
 use Kyto\Alibaba\Model\Token;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TokenFactoryTest extends TestCase
@@ -24,20 +25,14 @@ class TokenFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider createTokenDataProvider
-     * @param mixed[] $data
-     */
+    #[DataProvider('createTokenDataProvider')]
     public function testCreateToken(array $data, Token $expected): void
     {
         $actual = $this->tokenFactory->createToken($data);
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function createTokenDataProvider(): array
+    public static function createTokenDataProvider(): array
     {
         $cases = [];
 
